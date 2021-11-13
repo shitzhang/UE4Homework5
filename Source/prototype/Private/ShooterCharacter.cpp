@@ -9,6 +9,7 @@
 #include "../prototype.h"
 #include "Components/ShooterHealthComponent.h"
 #include "Components/ShooterMovementComponent.h"
+#include "Components/PawnNoiseEmitterComponent.h"
 #include "ShooterWeapon.h"
 #include "Net/UnrealNetwork.h"
 #include "Items/ShooterUsableActor.h"
@@ -33,6 +34,8 @@ AShooterCharacter::AShooterCharacter(const class FObjectInitializer& ObjectIniti
 
 	CameraComp = CreateDefaultSubobject<UCameraComponent>(TEXT("CameraComp"));
 	CameraComp->SetupAttachment(SpringArmComp);
+
+	NoiseEmitterComp = CreateDefaultSubobject<UPawnNoiseEmitterComponent>(TEXT("NoiseEmitterComp"));
 
 	ZoomedFOV = 65.0f;
 	ZoomInterpSpeed = 20;
@@ -155,6 +158,31 @@ FRotator AShooterCharacter::GetAimOffsets() const
 	const FRotator AimRotLS = AimDirLS.Rotation();
 
 	return AimRotLS;
+}
+
+
+void AShooterCharacter::MakePawnNoise(float Loudness)
+{
+	if (HasAuthority())
+	{
+		/* Make noise to be picked up by PawnSensingComponent by the enemy pawns */
+		MakeNoise(Loudness, this, GetActorLocation());
+	}
+	LastNoiseLoudness = Loudness;
+	LastMakeNoiseTime = GetWorld()->GetTimeSeconds();
+}
+
+
+
+float AShooterCharacter::GetLastNoiseLoudness()
+{
+	return LastNoiseLoudness;
+}
+
+
+float AShooterCharacter::GetLastMakeNoiseTime()
+{
+	return LastMakeNoiseTime;
 }
 
 

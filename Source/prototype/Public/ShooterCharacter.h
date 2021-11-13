@@ -38,6 +38,7 @@ enum class EInventorySlot : uint8
 
 class UCameraComponent;
 class USpringArmComponent;
+class UPawnNoiseEmitterComponent;
 class AShooterWeapon;
 class UShooterHealthComponent;
 class AShooterUsableActor;
@@ -64,6 +65,10 @@ class PROTOTYPE_API AShooterCharacter : public ACharacter
 	void StopAllAnimMontages();
 
 	FRotator ControllerRotationBeforeFreelook;
+
+	float LastNoiseLoudness;
+
+	float LastMakeNoiseTime;
 
 public:
 	// Sets default values for this character's properties
@@ -113,6 +118,16 @@ public:
 	/* Retrieve Pitch/Yaw from current camera */
 	UFUNCTION(BlueprintCallable, Category = "Targeting")
 	FRotator GetAimOffsets() const;
+
+	/* MakeNoise hook to trigger AI noise emitting (Loudness between 0.0-1.0)  */
+	UFUNCTION(BlueprintCallable, Category = "AI")
+	void MakePawnNoise(float Loudness);
+
+	UFUNCTION(BlueprintCallable, Category = "AI")
+	float GetLastNoiseLoudness();
+
+	UFUNCTION(BlueprintCallable, Category = "AI")
+	float GetLastMakeNoiseTime();
 
 	FORCEINLINE UCameraComponent* GetCameraComponent()
 	{
@@ -225,6 +240,10 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	UShooterHealthComponent* HealthComp;
+
+	/* Tracks noise data used by the pawn sensing component */
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+	UPawnNoiseEmitterComponent* NoiseEmitterComp;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Player")
 	float ZoomedFOV;
