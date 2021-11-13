@@ -16,8 +16,8 @@
 移动：WASD 跳：Space 蹲：左Ctrl 冲刺：左Shift 开火：鼠标左键 瞄准：鼠标右键  
   
 The zip file of exe(Windows-64bit) and video are in:  
-https://pan.baidu.com/s/1DB-O8zruzEeoWA4d-iOTCQ  
-password: 44c6  
+https://pan.baidu.com/s/1_K7yN84ILb9CfLP-4S4S5g  
+password: n3uf  
 
 
 
